@@ -3,7 +3,7 @@ import { BankingSystem } from './banking-system.js'
 
 const app = document.querySelector('#app')
 
-const bankingSystem = new BankingSystem(4563.00)
+const bankingSystem = new BankingSystem(0.00)
 
 app.innerHTML = `
   <div class="banking-container">
@@ -28,6 +28,17 @@ app.innerHTML = `
         <h2>Current Balance</h2>
         <div class="balance-amount" id="balance">$${bankingSystem.getBalance().toFixed(2)}</div>
         <div class="balance-subtitle">Available Balance</div>
+        <div class="savings-goal">
+          <div class="goal-progress">
+            <div class="goal-bar">
+              <div class="goal-fill" id="goalFill"></div>
+            </div>
+            <div class="goal-text">
+              <span>Savings Goal: $<span id="goalAmount">1000</span></span>
+              <span id="goalPercentage">0%</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="actions-grid">
@@ -58,6 +69,44 @@ app.innerHTML = `
             <button id="withdrawBtn" class="btn btn-withdraw">Withdraw</button>
           </div>
         </div>
+
+        <div class="action-card transfer-card">
+          <div class="action-icon transfer-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17,8 21,12 17,16"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+          </div>
+          <h3>Quick Transfer</h3>
+          <div class="input-group">
+            <select id="transferType" class="transfer-select">
+              <option value="savings">To Savings (+2% bonus)</option>
+              <option value="investment">To Investment (+5% bonus)</option>
+              <option value="charity">To Charity (tax deductible)</option>
+            </select>
+            <input type="number" id="transferAmount" placeholder="Enter amount" min="0.01" step="0.01">
+            <button id="transferBtn" class="btn btn-transfer">Transfer</button>
+          </div>
+        </div>
+
+        <div class="action-card loan-card">
+          <div class="action-icon loan-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+          </div>
+          <h3>Quick Loan</h3>
+          <div class="input-group">
+            <div class="loan-info">
+              <span>Available: $<span id="maxLoan">500</span></span>
+              <span class="loan-rate">Interest: 3%</span>
+            </div>
+            <input type="number" id="loanAmount" placeholder="Enter amount" min="50" max="500" step="50">
+            <button id="loanBtn" class="btn btn-loan">Get Loan</button>
+          </div>
+        </div>
       </div>
 
       <div class="transaction-history">
@@ -80,12 +129,46 @@ const depositBtn = document.getElementById('depositBtn')
 const withdrawBtn = document.getElementById('withdrawBtn')
 const transactionList = document.getElementById('transactionList')
 const notification = document.getElementById('notification')
+const transferAmountInput = document.getElementById('transferAmount')
+const transferTypeSelect = document.getElementById('transferType')
+const transferBtn = document.getElementById('transferBtn')
+const loanAmountInput = document.getElementById('loanAmount')
+const loanBtn = document.getElementById('loanBtn')
+const goalFill = document.getElementById('goalFill')
+const goalPercentage = document.getElementById('goalPercentage')
+const goalAmount = document.getElementById('goalAmount')
+const maxLoan = document.getElementById('maxLoan')
 
 // Update balance display
 function updateBalance() {
   balanceElement.textContent = `$${bankingSystem.getBalance().toFixed(2)}`
   balanceElement.classList.add('balance-update')
   setTimeout(() => balanceElement.classList.remove('balance-update'), 300)
+  updateSavingsGoal()
+  updateLoanLimit()
+}
+
+// Update savings goal progress
+function updateSavingsGoal() {
+  const currentBalance = bankingSystem.getBalance()
+  const goal = parseFloat(goalAmount.textContent)
+  const percentage = Math.min((currentBalance / goal) * 100, 100)
+  
+  goalFill.style.width = `${percentage}%`
+  goalPercentage.textContent = `${Math.round(percentage)}%`
+  
+  if (percentage >= 100) {
+    goalFill.style.background = 'linear-gradient(90deg, #10b981, #059669)'
+    showNotification('🎉 Congratulations! You\'ve reached your savings goal!', 'success')
+  }
+}
+
+// Update loan limit based on balance
+function updateLoanLimit() {
+  const balance = bankingSystem.getBalance()
+  const limit = Math.min(500, Math.max(50, balance * 0.5))
+  maxLoan.textContent = limit.toFixed(0)
+  loanAmountInput.max = limit
 }
 
 // Show notification
@@ -96,18 +179,40 @@ function showNotification(message, type = 'success') {
 }
 
 // Add transaction to history
-function addTransaction(type, amount, success = true) {
+function addTransaction(type, amount, success = true, description = '') {
   const transaction = document.createElement('div')
   transaction.className = `transaction ${type} ${success ? 'success' : 'failed'}`
   
-  const icon = type === 'deposit' ? '↗' : '↙'
-  const sign = type === 'deposit' ? '+' : '-'
+  let icon, sign
+  switch(type) {
+    case 'deposit':
+      icon = '↗'
+      sign = '+'
+      break
+    case 'withdraw':
+      icon = '↙'
+      sign = '-'
+      break
+    case 'transfer':
+      icon = '⇄'
+      sign = '+'
+      break
+    case 'loan':
+      icon = '💰'
+      sign = '+'
+      break
+    default:
+      icon = '•'
+      sign = ''
+  }
+  
   const status = success ? 'Completed' : 'Failed'
+  const displayType = description || (type.charAt(0).toUpperCase() + type.slice(1))
   
   transaction.innerHTML = `
     <div class="transaction-icon">${icon}</div>
     <div class="transaction-details">
-      <div class="transaction-type">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+      <div class="transaction-type">${displayType}</div>
       <div class="transaction-time">${new Date().toLocaleTimeString()}</div>
     </div>
     <div class="transaction-amount ${success ? '' : 'failed'}">${sign}$${amount.toFixed(2)}</div>
@@ -192,3 +297,96 @@ function validateInput(input) {
 
 validateInput(depositAmountInput)
 validateInput(withdrawAmountInput)
+validateInput(transferAmountInput)
+validateInput(loanAmountInput)
+
+// Transfer functionality
+transferBtn.addEventListener('click', () => {
+  const amount = parseFloat(transferAmountInput.value)
+  const transferType = transferTypeSelect.value
+  
+  if (!amount || amount <= 0) {
+    showNotification('Please enter a valid amount to transfer', 'error')
+    return
+  }
+  
+  if (amount > bankingSystem.getBalance()) {
+    showNotification('Insufficient funds for this transfer', 'error')
+    return
+  }
+  
+  let bonus = 0
+  let bonusRate = 0
+  
+  switch(transferType) {
+    case 'savings':
+      bonusRate = 0.02
+      break
+    case 'investment':
+      bonusRate = 0.05
+      break
+    case 'charity':
+      bonusRate = 0.0
+      break
+  }
+  
+  bonus = amount * bonusRate
+  const totalAmount = amount + bonus
+  
+  // Withdraw the original amount
+  const success = bankingSystem.withdraw(amount)
+  if (success) {
+    // Add back the total amount (original + bonus)
+    bankingSystem.deposit(totalAmount)
+    updateBalance()
+    
+    const transferTypeName = transferType.charAt(0).toUpperCase() + transferType.slice(1)
+    addTransaction('transfer', amount, true, `${transferTypeName} (+${(bonusRate * 100).toFixed(0)}% bonus)`)
+    
+    if (bonus > 0) {
+      showNotification(`Transfer successful! Bonus: $${bonus.toFixed(2)}`, 'success')
+    } else {
+      showNotification(`Transfer to ${transferTypeName} successful!`, 'success')
+    }
+    transferAmountInput.value = ''
+  }
+})
+
+// Loan functionality
+loanBtn.addEventListener('click', () => {
+  const amount = parseFloat(loanAmountInput.value)
+  const maxLoanAmount = parseFloat(maxLoan.textContent)
+  
+  if (!amount || amount <= 0) {
+    showNotification('Please enter a valid loan amount', 'error')
+    return
+  }
+  
+  if (amount > maxLoanAmount) {
+    showNotification(`Maximum loan amount is $${maxLoanAmount.toFixed(0)}`, 'error')
+    return
+  }
+  
+  // Calculate loan with 3% interest
+  const interest = amount * 0.03
+  const totalLoanAmount = amount + interest
+  
+  bankingSystem.deposit(totalLoanAmount)
+  updateBalance()
+  
+  addTransaction('loan', amount, true, `Loan (3% interest: $${interest.toFixed(2)})`)
+  showNotification(`Loan approved! Amount: $${totalLoanAmount.toFixed(2)}`, 'success')
+  loanAmountInput.value = ''
+})
+
+// Enter key support for new inputs
+transferAmountInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') transferBtn.click()
+})
+
+loanAmountInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') loanBtn.click()
+})
+
+// Initialize displays
+updateBalance()

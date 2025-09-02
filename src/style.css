@@ -129,9 +129,44 @@ body {
   font-size: 0.875rem;
 }
 
+.savings-goal {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--gray-200);
+}
+
+.goal-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.goal-bar {
+  height: 8px;
+  background: var(--gray-200);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.goal-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+  border-radius: 4px;
+  transition: width 0.5s ease;
+  width: 0%;
+}
+
+.goal-text {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  font-weight: 500;
+}
+
 .actions-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
 }
 
@@ -157,6 +192,14 @@ body {
   border-color: var(--error-color);
 }
 
+.transfer-card:hover {
+  border-color: var(--primary-color);
+}
+
+.loan-card:hover {
+  border-color: var(--warning-color);
+}
+
 .action-icon {
   width: 48px;
   height: 48px;
@@ -175,6 +218,16 @@ body {
 .withdraw-icon {
   background: var(--error-light);
   color: var(--error-color);
+}
+
+.transfer-icon {
+  background: #dbeafe;
+  color: var(--primary-color);
+}
+
+.loan-icon {
+  background: var(--warning-light);
+  color: var(--warning-color);
 }
 
 .action-card h3 {
@@ -204,6 +257,37 @@ body {
   border-color: var(--primary-color);
   background: var(--white);
   box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+}
+
+.transfer-select {
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--gray-200);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--gray-50);
+  color: var(--gray-800);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.transfer-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+}
+
+.loan-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  margin-bottom: 0.5rem;
+}
+
+.loan-rate {
+  color: var(--warning-color);
+  font-weight: 600;
 }
 
 .btn {
@@ -242,6 +326,24 @@ body {
 
 .btn-withdraw:hover {
   background: #b91c1c;
+}
+
+.btn-transfer {
+  background: var(--primary-color);
+  color: var(--white);
+}
+
+.btn-transfer:hover {
+  background: var(--primary-dark);
+}
+
+.btn-loan {
+  background: var(--warning-color);
+  color: var(--white);
+}
+
+.btn-loan:hover {
+  background: #b45309;
 }
 
 .transaction-history {
@@ -295,6 +397,14 @@ body {
   border-left-color: var(--error-color);
 }
 
+.transaction.transfer.success {
+  border-left-color: var(--primary-color);
+}
+
+.transaction.loan.success {
+  border-left-color: var(--warning-color);
+}
+
 .transaction.failed {
   border-left-color: var(--warning-color);
   background: var(--warning-light);
@@ -311,6 +421,14 @@ body {
 
 .transaction.withdraw .transaction-icon {
   color: var(--error-color);
+}
+
+.transaction.transfer .transaction-icon {
+  color: var(--primary-color);
+}
+
+.transaction.loan .transaction-icon {
+  color: var(--warning-color);
 }
 
 .transaction.failed .transaction-icon {
@@ -343,6 +461,14 @@ body {
 
 .transaction.withdraw .transaction-amount {
   color: var(--error-color);
+}
+
+.transaction.transfer .transaction-amount {
+  color: var(--primary-color);
+}
+
+.transaction.loan .transaction-amount {
+  color: var(--warning-color);
 }
 
 .transaction-amount.failed {
