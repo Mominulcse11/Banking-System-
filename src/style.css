@@ -1,0 +1,453 @@
+:root {
+  --primary-color: #2563eb;
+  --primary-dark: #1d4ed8;
+  --success-color: #059669;
+  --success-light: #d1fae5;
+  --error-color: #dc2626;
+  --error-light: #fee2e2;
+  --warning-color: #d97706;
+  --warning-light: #fef3c7;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --white: #ffffff;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  line-height: 1.6;
+  color: var(--gray-800);
+}
+
+.banking-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.bank-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--white);
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 2rem;
+}
+
+.bank-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.bank-logo svg {
+  color: var(--primary-color);
+}
+
+.bank-logo h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--gray-800);
+  margin: 0;
+}
+
+.account-info {
+  color: var(--gray-600);
+  font-weight: 500;
+}
+
+.banking-main {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+}
+
+.balance-card {
+  background: var(--white);
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: var(--shadow-xl);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.balance-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+}
+
+.balance-card h2 {
+  font-size: 1.25rem;
+  color: var(--gray-600);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.balance-amount {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.balance-amount.balance-update {
+  transform: scale(1.05);
+  color: var(--success-color);
+}
+
+.balance-subtitle {
+  color: var(--gray-500);
+  font-size: 0.875rem;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.action-card {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.action-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+.deposit-card:hover {
+  border-color: var(--success-color);
+}
+
+.withdraw-card:hover {
+  border-color: var(--error-color);
+}
+
+.action-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.deposit-icon {
+  background: var(--success-light);
+  color: var(--success-color);
+}
+
+.withdraw-icon {
+  background: var(--error-light);
+  color: var(--error-color);
+}
+
+.action-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--gray-800);
+}
+
+.input-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-direction: column;
+}
+
+.input-group input {
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--gray-200);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: var(--gray-50);
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+}
+
+.btn {
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-deposit {
+  background: var(--success-color);
+  color: var(--white);
+}
+
+.btn-deposit:hover {
+  background: #047857;
+}
+
+.btn-withdraw {
+  background: var(--error-color);
+  color: var(--white);
+}
+
+.btn-withdraw:hover {
+  background: #b91c1c;
+}
+
+.transaction-history {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+}
+
+.transaction-history h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--gray-800);
+}
+
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.no-transactions {
+  text-align: center;
+  color: var(--gray-500);
+  padding: 2rem;
+  font-style: italic;
+}
+
+.transaction {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  background: var(--gray-50);
+  border-radius: 8px;
+  border-left: 4px solid var(--gray-300);
+  transition: all 0.2s ease;
+}
+
+.transaction:hover {
+  background: var(--gray-100);
+}
+
+.transaction.deposit.success {
+  border-left-color: var(--success-color);
+}
+
+.transaction.withdraw.success {
+  border-left-color: var(--error-color);
+}
+
+.transaction.failed {
+  border-left-color: var(--warning-color);
+  background: var(--warning-light);
+}
+
+.transaction-icon {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.transaction.deposit .transaction-icon {
+  color: var(--success-color);
+}
+
+.transaction.withdraw .transaction-icon {
+  color: var(--error-color);
+}
+
+.transaction.failed .transaction-icon {
+  color: var(--warning-color);
+}
+
+.transaction-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-type {
+  font-weight: 600;
+  color: var(--gray-800);
+}
+
+.transaction-time {
+  font-size: 0.875rem;
+  color: var(--gray-500);
+}
+
+.transaction-amount {
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.transaction.deposit .transaction-amount {
+  color: var(--success-color);
+}
+
+.transaction.withdraw .transaction-amount {
+  color: var(--error-color);
+}
+
+.transaction-amount.failed {
+  color: var(--warning-color);
+}
+
+.transaction-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gray-500);
+}
+
+.notification {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  max-width: 300px;
+}
+
+.notification.success {
+  background: var(--success-color);
+  color: var(--white);
+}
+
+.notification.error {
+  background: var(--error-color);
+  color: var(--white);
+}
+
+.notification.hidden {
+  opacity: 0;
+  transform: translateX(100%);
+  pointer-events: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .banking-container {
+    padding: 1rem;
+  }
+  
+  .bank-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .balance-amount {
+    font-size: 2.5rem;
+  }
+  
+  .input-group {
+    flex-direction: column;
+  }
+  
+  .transaction {
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+  }
+  
+  .transaction-amount,
+  .transaction-status {
+    grid-column: 2;
+    text-align: right;
+  }
+  
+  .notification {
+    top: 1rem;
+    right: 1rem;
+    left: 1rem;
+    max-width: none;
+  }
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.transaction {
+  animation: slideIn 0.3s ease;
+}
+
+/* Focus styles for accessibility */
+.btn:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
