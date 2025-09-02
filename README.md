@@ -1,5 +1,6 @@
-
+Visit https://banking-system-three-nu.vercel.app/
 # Banking System (C++)
+
 
 A simple console-based banking system built in C++ that allows users to perform basic operations like checking balance, depositing funds, and withdrawing money. This project is ideal for beginners who want to practice control structures, functions, and input validation in C++.
 
@@ -21,7 +22,7 @@ A simple console-based banking system built in C++ that allows users to perform 
 
 ## How It Works
 
-1. The program starts with a fixed balance of `4563.00`.
+1. The program starts with a fixed balance of `0.00$`.
 2. The user is shown a menu with 4 options:
     - Show Balance
     - Deposit Money
